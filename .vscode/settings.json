@@ -1,6 +1,5 @@
 {
-  "cSpell.words": [
-    "Sommaire"
-  ],
+  "cSpell.words": ["Sommaire"],
   "editor.formatOnSave": true,
+  "prettier.printWidth": 50
 }
