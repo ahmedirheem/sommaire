@@ -13,9 +13,8 @@ const CTASection = () => {
               Ready to Save Hours of Reading Time?
             </h2>
             <p className="mx-auto max-w-[650px] text-gray-500 md:text-base/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
-              Transform lengthy documents into
-              concise summaries with our
-              AI-powered tool.
+              Transform lengthy documents into concise summaries with
+              our AI-powered tool.
             </p>
           </div>
 
