@@ -3,7 +3,7 @@ import { Source_Sans_3 as FontSans } from "next/font/google";
 import "./globals.css";
 import { Header, Footer } from "@/components/common";
 import { ClerkProvider } from "@clerk/nextjs";
-import { FileText } from "lucide-react";
+import { Toaster } from "sonner";
 
 const fontSans = FontSans({
   variable: "--font-sans",
@@ -36,6 +36,7 @@ export default function RootLayout({
             <main className="flex-1">{children}</main>
             <Footer />
           </div>
+          <Toaster position="top-right" />
         </body>
       </html>
     </ClerkProvider>
