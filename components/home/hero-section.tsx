@@ -1,8 +1,8 @@
 import { ArrowRight, Sparkles } from "lucide-react";
 import Link from "next/link";
 import React from "react";
-import { Button } from "../ui/button";
-import { Badge } from "../ui/badge";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 
 const HeroSection = () => {
   return (

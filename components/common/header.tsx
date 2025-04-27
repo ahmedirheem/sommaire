@@ -1,7 +1,6 @@
 import React from "react";
 import NavLink from "./nav-link";
 import { FileText } from "lucide-react";
-import { Button } from "../ui/button";
 import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 
 const Header = () => {

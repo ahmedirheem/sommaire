@@ -5,6 +5,7 @@ import UploadFormInput from "./upload-form-input";
 import { z } from "zod";
 import { useUploadThing } from "@/utils/uploadthing";
 import { toast } from "sonner";
+import { generatePdfSummary } from "@/actions/upload-actions";
 
 const schema = z.object({
   file: z
@@ -74,6 +75,7 @@ const UploadForm = () => {
       description: "This may take a few seconds...",
     });
 
+    // Upload the file to the server
     const resp = await startUpload([file]);
     if (!resp) {
       toast("Something went wrong", {
@@ -88,6 +90,25 @@ const UploadForm = () => {
       description:
         "Hang tight! Our AI is reading through your document",
     });
+
+    // Parse the PDF using Langchain
+    const summary = await generatePdfSummary(resp);
+    // const summary = await generatePdfSummary([{
+    //   serverData: {
+    //     userId: resp[0].serverData.userId,
+    //     file: {
+    //       ufsUrl: resp[0].serverData.file.ufsUrl,
+    //       name: resp[0].serverData.file.name
+    //     }
+    //   }
+    // }]);
+    console.log("summary", { summary });
+
+    // Summarize the PDF using AI
+
+    // Save the summary to the database
+
+    // Redirect to the [id] summary page
   };
 
   return (
