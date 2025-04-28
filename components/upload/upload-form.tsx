@@ -5,7 +5,12 @@ import UploadFormInput from "./upload-form-input";
 import { z } from "zod";
 import { useUploadThing } from "@/utils/uploadthing";
 import { toast } from "sonner";
-import { generatePdfSummary } from "@/actions/upload-actions";
+import {
+  generatePdfSummary,
+  storePdfSummaryAction,
+} from "@/actions/upload-actions";
+import { formatFileNameAsTitle } from "@/utils/format-utils";
+import { useRouter } from "next/navigation";
 
 const schema = z.object({
   file: z
@@ -36,6 +41,7 @@ const schema = z.object({
 const UploadForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
+  const router = useRouter();
 
   const { startUpload, routeConfig } = useUploadThing("pdfUploader", {
     onClientUploadComplete: () => {
@@ -97,6 +103,7 @@ const UploadForm = () => {
       });
 
       // Parse the PDF using Langchain
+      // Summarize the PDF using AI
       const result = await generatePdfSummary(resp);
       // const summary = await generatePdfSummary([{
       //   serverData: {
@@ -110,27 +117,41 @@ const UploadForm = () => {
       const { data = null, message = null } = result || {};
 
       if (data) {
+        let storedSummary;
         toast("Saving PDF...", {
           icon: "📃",
           description: "Hang tight! Ae are saving your summary",
         });
-        formRef.current?.reset();
 
         if (data.summary) {
-          console.log("save the summary to the database");
-        //   save the summary to the database
+          //   save the summary to the database
+          storedSummary = await storePdfSummaryAction({
+            summary: data.summary,
+            fileUrl: resp[0].serverData.file.ufsUrl,
+            title: data.title,
+            fileName: file.name,
+          });
+
+          toast("Summary Generated", {
+            icon: "✅",
+            description:
+              "Your PDF has been successfully summarized and saved",
+          });
+
+          formRef.current?.reset();
+          // Redirect to the [id] summary page
+          console.log("Stored Summary  from test", storedSummary);
+          console.log("Stored Summary IDDDD from test", storedSummary.data?.id);
+          
+          router.push(`/summary/${storedSummary.data?.id}`)
         }
       }
-
-      // Summarize the PDF using AI
-
-      // Save the summary to the database
-
-      // Redirect to the [id] summary page
     } catch (error) {
       setIsLoading(false);
       console.log("An Error Occured", error);
       formRef.current?.reset();
+    } finally {
+      setIsLoading(false);
     }
   };
   return (
