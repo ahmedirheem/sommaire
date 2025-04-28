@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useRef, useState } from "react";
 import UploadFormInput from "./upload-form-input";
 import { z } from "zod";
 import { useUploadThing } from "@/utils/uploadthing";
@@ -34,6 +34,9 @@ const schema = z.object({
 });
 
 const UploadForm = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const formRef = useRef<HTMLFormElement>(null);
+
   const { startUpload, routeConfig } = useUploadThing("pdfUploader", {
     onClientUploadComplete: () => {
       console.log("uploaded successfully!");
@@ -53,67 +56,90 @@ const UploadForm = () => {
     e: React.FormEvent<HTMLFormElement>
   ) => {
     e.preventDefault();
-    console.log("submitted");
+    try {
+      setIsLoading(true);
+      const formData = new FormData(e.currentTarget);
+      const file = formData.get("file") as File;
 
-    const formData = new FormData(e.currentTarget);
-    const file = formData.get("file") as File;
+      const validatedFields = schema.safeParse({ file });
 
-    const validatedFields = schema.safeParse({ file });
+      if (!validatedFields.success) {
+        toast("Something went wrong", {
+          description:
+            validatedFields.error.flatten().fieldErrors.file?.[0] ??
+            "Invalid File",
+          icon: "🚨",
+        });
+        setIsLoading(false);
+        return;
+      }
 
-    if (!validatedFields.success) {
-      toast("Something went wrong", {
+      toast("Uploading you PDF...", {
+        icon: "🔄",
+        description: "This may take a few seconds...",
+      });
+
+      // Upload the file to the server
+      const resp = await startUpload([file]);
+      if (!resp) {
+        toast("Something went wrong", {
+          description: "Please try a different file",
+          icon: "🚨",
+        });
+        setIsLoading(false);
+        return;
+      }
+
+      toast("Processing your PDF...", {
+        icon: "📃",
         description:
-          validatedFields.error.flatten().fieldErrors.file?.[0] ??
-          "Invalid File",
-        icon: "🚨",
+          "Hang tight! Our AI is reading through your document",
       });
-      return;
+
+      // Parse the PDF using Langchain
+      const result = await generatePdfSummary(resp);
+      // const summary = await generatePdfSummary([{
+      //   serverData: {
+      //     userId: resp[0].serverData.userId,
+      //     file: {
+      //       ufsUrl: resp[0].serverData.file.ufsUrl,
+      //       name: resp[0].serverData.file.name
+      //     }
+      //   }
+      // }]);
+      const { data = null, message = null } = result || {};
+
+      if (data) {
+        toast("Saving PDF...", {
+          icon: "📃",
+          description: "Hang tight! Ae are saving your summary",
+        });
+        formRef.current?.reset();
+
+        if (data.summary) {
+          console.log("save the summary to the database");
+        //   save the summary to the database
+        }
+      }
+
+      // Summarize the PDF using AI
+
+      // Save the summary to the database
+
+      // Redirect to the [id] summary page
+    } catch (error) {
+      setIsLoading(false);
+      console.log("An Error Occured", error);
+      formRef.current?.reset();
     }
-
-    toast("Uploading you PDF...", {
-      icon: "🔄",
-      description: "This may take a few seconds...",
-    });
-
-    // Upload the file to the server
-    const resp = await startUpload([file]);
-    if (!resp) {
-      toast("Something went wrong", {
-        description: "Please try a different file",
-        icon: "🚨",
-      });
-      return;
-    }
-
-    toast("Processing your PDF...", {
-      icon: "📃",
-      description:
-        "Hang tight! Our AI is reading through your document",
-    });
-
-    // Parse the PDF using Langchain
-    const summary = await generatePdfSummary(resp);
-    // const summary = await generatePdfSummary([{
-    //   serverData: {
-    //     userId: resp[0].serverData.userId,
-    //     file: {
-    //       ufsUrl: resp[0].serverData.file.ufsUrl,
-    //       name: resp[0].serverData.file.name
-    //     }
-    //   }
-    // }]);
-    console.log("summary", { summary });
-
-    // Summarize the PDF using AI
-
-    // Save the summary to the database
-
-    // Redirect to the [id] summary page
   };
-
   return (
     <div className="flex flex-col w-full max-w-2xl mx-auto">
-      <UploadFormInput onSubmit={handleSubmit} />
+      <UploadFormInput
+        ref={formRef}
+        isLoading={isLoading}
+        onSubmit={handleSubmit}
+      />
     </div>
   );
 };

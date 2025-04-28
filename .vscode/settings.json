@@ -1,5 +1,6 @@
 {
   "cSpell.words": ["Sommaire"],
   "editor.formatOnSave": true,
-  "prettier.printWidth": 70
+  "prettier.printWidth": 70,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
 }

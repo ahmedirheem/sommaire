@@ -24,7 +24,10 @@ export async function generateSummaryFromOpenAI(pdfText: string) {
       max_tokens: 1500,
     });
 
-    return response.choices[0].message.content;
+    const summary = response.choices[0].message.content;
+    console.log("Summary from OpenAI:", summary);
+
+    return summary;
   } catch (error: any) {
     if (error?.status === 429) {
       throw new Error("RATE_LIMIT_EXCEEDED");
