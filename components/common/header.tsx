@@ -11,8 +11,8 @@ const Header = () => {
           href="/"
           className="flex gap-1 items-center lg:gap-2 group"
         >
-          <FileText className="w-5 h-5 lg:w-8 lg:h-8 group-hover:rotate-12 transform transition duration-200" />
-          <span className="font-extrabold lg:text-xl">Sommaire</span>
+          <FileText className="w-6 h-6 lg:w-8 lg:h-8 group-hover:rotate-12 transform transition duration-200" />
+          <span className="font-extrabold text-lg lg:text-xl">Sommaire</span>
         </NavLink>
       </div>
 
@@ -26,7 +26,7 @@ const Header = () => {
       <div className="flex lg:justify-end lg:flex-1">
         <SignedIn>
           <div className="flex gap-2 items-center">
-            <NavLink href="/upload">Upload PDF</NavLink>
+            <NavLink href="/upload" className="text-sm">Upload PDF</NavLink>
             <div>Pro</div>
             <UserButton />
           </div>
