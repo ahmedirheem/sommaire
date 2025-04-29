@@ -58,7 +58,6 @@ export async function generatePdfSummary(
     let summary;
     try {
       summary = await generateSummaryFromOpenAI(pdfText);
-      console.log({ summary });
     } catch (error) {
       console.error(error);
 
@@ -115,23 +114,27 @@ async function savePdfSummary({
   title,
   fileName,
 }: PdfSummaryType) {
+
   try {
     const sql = await getDbConnection();
-    await sql`
-    INSERT INTO pdf_summaries (
-      user_id, 
-      original_file_url,
-      summary,
-      title,
-      file_name
-    ) VALUES (
-      ${userId},
-      ${fileUrl},
-      ${summary},
-      ${title},
-      ${fileName}
-    );
-  `;
+    const savedSummary = await sql`
+      INSERT INTO pdf_summaries (
+        user_id, 
+        original_file_url,
+        summary,
+        title,
+        file_name
+      ) VALUES (
+        ${userId},
+        ${fileUrl},
+        ${summary},
+        ${title},
+        ${fileName}
+      )
+      RETURNING *;
+    `;
+
+    return savedSummary;
   } catch (error) {
     console.error("Error saving pdf summary", error);
     throw error;
@@ -164,7 +167,7 @@ export async function storePdfSummaryAction({
       fileName,
     });
 
-    if (!savePdfSummary) {
+    if (!savedSummary) {
       return {
         success: false,
         message: "Fiald to save PDF summary, please try again...",
@@ -180,14 +183,14 @@ export async function storePdfSummaryAction({
     };
   }
 
-  console.log("Stored Summary  from NEW test", savedSummary.id);
 
-  revalidatePath(`/summary/${savedSummary.id}`);
+  revalidatePath(`/summary/${savedSummary[0].id}`);
   return {
     success: true,
     message: "PDF summary saved successfully",
     data: {
-      id: savedSummary.id,
+      id: savedSummary[0].id,
+      // savedSummary
     },
   };
 }

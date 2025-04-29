@@ -24,7 +24,6 @@ export async function generateSummaryFromGemini(pdfText: string) {
       },
     });
     const summary = result.text;
-    console.log("Summary from Gemini:", summary);
 
     if (!summary) {
       throw new Error("Empty response from Gemini API");

@@ -25,7 +25,6 @@ export async function generateSummaryFromOpenAI(pdfText: string) {
     });
 
     const summary = response.choices[0].message.content;
-    console.log("Summary from OpenAI:", summary);
 
     return summary;
   } catch (error: any) {

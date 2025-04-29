@@ -140,9 +140,6 @@ const UploadForm = () => {
 
           formRef.current?.reset();
           // Redirect to the [id] summary page
-          console.log("Stored Summary  from test", storedSummary);
-          console.log("Stored Summary IDDDD from test", storedSummary.data?.id);
-          
           router.push(`/summary/${storedSummary.data?.id}`)
         }
       }
