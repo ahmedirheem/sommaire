@@ -52,3 +52,18 @@ export async function getSummariesAction(userId: string) {
     console.error("Error getting summaries", error);
   }
 }
+
+export async function getSummaryById(id: string){
+  try {
+    const sql = await getDbConnection();
+
+    const [summary] = await sql`
+      SELECT * From pdf_summaries where id=${id}
+    `;
+
+    return summary;
+  } catch (error) {
+    console.error("Error while getting a summary", error);
+    
+  }
+}

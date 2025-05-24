@@ -6,7 +6,7 @@ const genAI = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 export async function generateSummaryFromGemini(pdfText: string) {
   try {
     const result = await genAI.models.generateContent({
-      model: "gemini-1.5-pro-002",
+      model: "gemini-2.0-flash",
       contents: [
         {
           role: "user",
