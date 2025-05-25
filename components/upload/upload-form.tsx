@@ -53,8 +53,8 @@ const UploadForm = () => {
         icon: "🚨",
       });
     },
-    onUploadBegin: (file) => {
-      console.log("upload has begun for", file);
+    onUploadBegin: (data) => {
+      console.log("upload has begun for", data);
     },
   });
 
@@ -86,8 +86,8 @@ const UploadForm = () => {
       });
 
       // Upload the file to the server
-      const resp = await startUpload([file]);
-      if (!resp) {
+      const uploadResponse = await startUpload([file]);
+      if (!uploadResponse) {
         toast("Something went wrong", {
           description: "Please try a different file",
           icon: "🚨",
@@ -104,16 +104,13 @@ const UploadForm = () => {
 
       // Parse the PDF using Langchain
       // Summarize the PDF using AI
-      const result = await generatePdfSummary(resp);
-      // const summary = await generatePdfSummary([{
-      //   serverData: {
-      //     userId: resp[0].serverData.userId,
-      //     file: {
-      //       ufsUrl: resp[0].serverData.file.ufsUrl,
-      //       name: resp[0].serverData.file.name
-      //     }
-      //   }
-      // }]);
+      const uploadedFileUrl = uploadResponse[0].serverData.fileUrl
+
+      const result = await generatePdfSummary({
+        fileUrl: uploadedFileUrl,
+        fileName: file.name,
+      });
+
       const { data = null, message = null } = result || {};
 
       if (data) {
@@ -127,7 +124,7 @@ const UploadForm = () => {
           //   save the summary to the database
           storedSummary = await storePdfSummaryAction({
             summary: data.summary,
-            fileUrl: resp[0].serverData.file.ufsUrl,
+            fileUrl: uploadedFileUrl,
             title: data.title,
             fileName: file.name,
           });
@@ -140,7 +137,7 @@ const UploadForm = () => {
 
           formRef.current?.reset();
           // Redirect to the [id] summary page
-          router.push(`/summary/${storedSummary.data?.id}`)
+          router.push(`/summaries/${storedSummary.data?.id}`)
         }
       }
     } catch (error) {

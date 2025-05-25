@@ -38,16 +38,28 @@ export const parseSection = (
 };
 
 
+// export const parsePoint = (point: string) => {
+//   const isNumbered = /^\d+\./.test(point);
+//   const isMainPoint = /^./.test(point);
+
+//   const emojiRegex = /[\u{1F300}-\u{1F9FF}]|[\u{2600}-\u{26FF}]/u;
+//   const hasEmoji = emojiRegex.test(point);
+//   const isEmpty = !point.trim();
+
+//   return { isNumbered, isMainPoint, hasEmoji, isEmpty };
+// };
+
 export const parsePoint = (point: string) => {
   const isNumbered = /^\d+\./.test(point);
   const isMainPoint = /^./.test(point);
 
-  const emojiRegex = /[\u{1F300}-\u{1F9FF}]|[\u{2600}-\u{26FF}]/u;
-  const hasEmoji = emojiRegex.test(point);
+  const emojiAtStartRegex = /^(\p{Emoji}|\p{Extended_Pictographic})/u;
+  const hasEmoji = emojiAtStartRegex.test(point.trim());
   const isEmpty = !point.trim();
 
   return { isNumbered, isMainPoint, hasEmoji, isEmpty };
 };
+
 
 export const parseEmojiPoint = (content: string) => {
   const cleanContent = content.replace(/^[.]\s*/, "").trim();

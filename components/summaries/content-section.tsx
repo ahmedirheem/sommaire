@@ -25,10 +25,10 @@ const RegularPoint = ({ point }: { point: string }) => {
   return (
     <div className="relative bg-gradient-to-br from-gray-200/[0.08] to-gray-400/[0.03] p-2 my-4 rounded-xl border border-gray-500/10 hover:shadow-lg transition-all">
       <div className="flex items-start gap-3">
-          <p className="relative lg:text-lg text-muted-foreground/90 leading-relaxed text-left">
-            {point}
-          </p>
-        </div>
+        <p className="relative lg:text-lg text-muted-foreground/90 leading-relaxed text-left">
+          {point}
+        </p>
+      </div>
     </div>
   );
 };
@@ -41,10 +41,23 @@ const ContentSection = ({ points }: { points: string[] }) => {
 
         if (isEmpty) return null;
 
+        // Remove leading dot and whitespace
+        const cleanPoint = point.replace(/^\.\s*/, "").trim();
+
         if (hasEmoji) {
-          return <EmojiPoint key={`point-${index}`} point={point} />;
+          const parsed = parseEmojiPoint(point);
+          if (parsed) {
+            return (
+              <EmojiPoint key={`point-${index}`} point={cleanPoint} />
+            );
+          }
+          // fallback in case emoji is not at the start
+          return (
+            <RegularPoint key={`point-${index}`} point={cleanPoint} />
+          );
         }
-        return <RegularPoint key={`point-${index}`} point={point} />;
+
+        return <RegularPoint key={`point-${index}`} point={cleanPoint} />;
       })}
     </div>
   );
