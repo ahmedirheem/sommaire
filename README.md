@@ -1,36 +1,60 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 📄 **Sommaire** – *Summarize PDFs into structured, insightful reels powered by AI* 🤖📚
 
-## Getting Started
+**Sommaire** is a powerful AI-powered web application that transforms PDF documents into clean, structured summaries with key insights, emojis, and a beautiful visual interface. Whether you're a student, researcher, or professional, Sommaire helps you digest long documents quickly and efficiently.
 
-First, run the development server:
+Built using modern tools like **Next.js 15**, **GPT-4**, **Langchain**, and **TailwindCSS**, Sommaire delivers both functionality and aesthetics.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## ✨ Features
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 🧠 Core Technologies
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- ⚙️ **Next.js 15 App Router** – SSR, routing, and API endpoints with Server Components
+- ⚛️ **React** – Interactive UI with reusable components
+- 🔐 **Clerk** – Secure authentication (Passkeys, GitHub, Google)
+- 🤖 **GPT-4** – Context-aware summarization with emoji-enhanced output
+- 📄 **Langchain** – PDF parsing, chunking, and text extraction
+- 🎨 **Shadcn UI** – Accessible, customizable React components
+- 🧮 **NoDB (PostgreSQL)** – Serverless storage for summaries and user data
+- ☁️ **UploadThing** – Secure file uploads (up to 32MB)
+- 💳 **Stripe** – Subscription billing and secure payments
+- 🧑‍💻 **TypeScript** – Robust developer experience with static typing
+- 🎯 **TailwindCSS** – Utility-first, responsive styling
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+### 📱 Application Features
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- 🧾 Clear, structured summaries with key points and highlights  
+- 🖼️ Interactive summary viewer with smooth progress tracking  
+- 🔒 Secure file handling & protected API routes  
+- 💸 Flexible pricing plans (Free, Basic, and Pro)  
+- 🔁 Webhook support for Stripe events  
+- 🧑‍💼 User dashboard to manage summaries and uploads  
+- 📱 Fully responsive design for all devices  
+- 🔄 Real-time updates and path revalidation  
+- 🚀 Production-ready deployment  
+- 🛎️ Toast notifications for upload status and errors  
+- ⚡ Performance-optimized with SEO-friendly summary pages  
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## 🚀 Live Demo
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+🔗 [**Try Sommaire now**](https://sommaire-eosin.vercel.app/)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## 📸 Screenshots
+
+### 🔐 Login Page  
+![Login Page](#)
+
+### 🧾 Summary Viewer  
+![Summary Viewer](#)
+
+---
+
+
+> Made with ❤️ using AI and modern web technologies By Ahmed Irheem.

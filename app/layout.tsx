@@ -4,6 +4,7 @@ import "./globals.css";
 import { Header, Footer } from "@/components/common";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "sonner";
+import { ORIGIN_URL } from "@/utils/helpers";
 
 const fontSans = FontSans({
   variable: "--font-sans",
@@ -17,6 +18,17 @@ export const metadata: Metadata = {
     "Save hours of reading time, Transform lengthy PDFs into clear, accurate summaries in seconds with our advanced AI technology.",
   icons: {
     icon: "/file-logo.svg"
+  },
+  openGraph: {
+    images: [
+      {
+        url: ''
+      }
+    ]
+  },
+  metadataBase: new URL(ORIGIN_URL),
+  alternates: {
+    canonical: ORIGIN_URL
   }
 };
 
